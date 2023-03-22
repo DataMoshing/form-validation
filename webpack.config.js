@@ -3,6 +3,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
+    mode: "development",
     entry: {
         entry: "./src/index.js",
     },
@@ -10,9 +11,10 @@ module.exports = {
         filename: "bundle.js",
         path: path.resolve(__dirname, "dist"),
     },
+    devtool: "inline-source-map",
     plugins: [
         new HtmlWebpackPlugin({
-            title: "Output Management",
+            title: "Development",
         }),
     ],
     module: {
