@@ -1,8 +1,12 @@
 const form = document.querySelector("form");
 const email = document.getElementById("mail");
 const zip = document.getElementById("zip-code");
+const password = document.getElementById("password")
+const confirmPassword = document.getElementById("confirm-password")
 const error = email.nextElementSibling;
 const zipError = zip.nextElementSibling;
+const passwordError = password.nextElementSibling;
+const confirmPasswordError = confirmPassword.nextElementSibling;
 
 console.log(email)
 
@@ -10,6 +14,10 @@ const emailRegExp =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 const zipCode = /^(\d{5})?$/;
+
+const passwordMinimum = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+
+
 
 zip.addEventListener("input", () => {
     const isValid = zip.value.length === 0 || zipCode.test(zip.value)
@@ -19,6 +27,17 @@ zip.addEventListener("input", () => {
         zipError.className = "error"
     } else {
         zip.className = "invalid"
+    }
+})
+
+password.addEventListener("input", () => {
+    const isValid = password.value.length === 0 || passwordMinimum.test(password.value)
+    if (isValid) {
+        password.className = "valid"
+        passwordError.textContent = ""
+        passwordError.className = "error"
+    } else {
+        password.className = "invalid"
     }
 })
 
@@ -38,11 +57,24 @@ email.addEventListener("input", () => {
     }
 });
 
+confirmPassword.addEventListener("input", () => {
+    const isValid = confirmPassword.value.length === 0 || passwordMinimum.test(confirmPassword.value) || confirmPassword.value !== password.value
+    if (isValid) {
+        confirmPassword.className = "valid"
+        confirmPasswordError.textContent = ""
+        confirmPasswordError.className = "error"
+    } else {
+        confirmPassword.className = "invalid"
+    }
+})
+
 form.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const isValid = email.value.length !== 0 && emailRegExp.test(email.value);
     const zipValid = zip.value.length !== 0 && zipCode.test(zip.value)
+    const passwordValid = password.value.length !== 0 && passwordMinimum.test(password.value)
+    const confirmPasswordValid = confirmPassword.value.length !== 0
     if (!isValid) {
         email.className = "invalid";
         error.textContent = "Please enter a valid email.";
@@ -51,7 +83,16 @@ form.addEventListener("submit", (event) => {
         zip.className = "invalid";
         zipError.textContent = "Please enter a valid zip code (5 digits).";
         zipError.className = "error active";
+    } else if (!passwordValid) {
+        password.className = "invalid";
+        passwordError.textContent = "- at least 8 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number";
+        passwordError.className = "error active";
+    } else if (!confirmPasswordValid && confirmPassword.value !== password.value) {
+        confirmPassword.className = "invalid"
+        confirmPasswordError.textContent = "Passwords do not match"
+        confirmPasswordError.className = "error active"
     } else {
+        alert("High five!")
         email.className = "valid";
         error.textContent = "";
         error.className = "error";
