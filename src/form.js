@@ -8,16 +8,12 @@ const zipError = zip.nextElementSibling;
 const passwordError = password.nextElementSibling;
 const confirmPasswordError = confirmPassword.nextElementSibling;
 
-console.log(email)
-
 const emailRegExp =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 const zipCode = /^(\d{5})?$/;
 
 const passwordMinimum = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
-
-
 
 zip.addEventListener("input", () => {
     const isValid = zip.value.length === 0 || zipCode.test(zip.value)
@@ -58,7 +54,7 @@ email.addEventListener("input", () => {
 });
 
 confirmPassword.addEventListener("input", () => {
-    const isValid = confirmPassword.value.length === 0 || passwordMinimum.test(confirmPassword.value) || confirmPassword.value !== password.value
+    const isValid = confirmPassword.value.length !== 0 && confirmPassword.value === password.value && passwordMinimum.test(confirmPassword.value)
     if (isValid) {
         confirmPassword.className = "valid"
         confirmPasswordError.textContent = ""
@@ -74,7 +70,7 @@ form.addEventListener("submit", (event) => {
     const isValid = email.value.length !== 0 && emailRegExp.test(email.value);
     const zipValid = zip.value.length !== 0 && zipCode.test(zip.value)
     const passwordValid = password.value.length !== 0 && passwordMinimum.test(password.value)
-    const confirmPasswordValid = confirmPassword.value.length !== 0
+    const confirmPasswordValid = confirmPassword.value.length !== 0 && confirmPassword.value === password.value && passwordMinimum.test(confirmPassword.value)
     if (!isValid) {
         email.className = "invalid";
         error.textContent = "Please enter a valid email.";
@@ -87,7 +83,7 @@ form.addEventListener("submit", (event) => {
         password.className = "invalid";
         passwordError.textContent = "- at least 8 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number";
         passwordError.className = "error active";
-    } else if (!confirmPasswordValid && confirmPassword.value !== password.value) {
+    } else if (!confirmPasswordValid) {
         confirmPassword.className = "invalid"
         confirmPasswordError.textContent = "Passwords do not match"
         confirmPasswordError.className = "error active"
