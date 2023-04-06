@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Development</title>
+  <title>Form Validation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <script defer src="bundle.js"></script></head>
 
@@ -264,10 +264,25 @@
     </p>
     <p>
       <label for="zip-code">
-        <span>Zip code: </span>
+        <span>ZIP code: </span>
         <input type="text" id="zip-code" />
         <span class="error" aria-live="polite"></span>
       </label>
+    </p>
+    <p>
+      <label for="password">
+        <span>Password:
+          <input type="text" id="password" />
+          <span class="error" aria-live="polite"></span>
+        </span>
+      </label>
+    </p>
+    <label for="confirm-password">
+      <span>Confirm password:
+        <input type="text" id="confirm-password" />
+        <span class="error" aria-live="polite"></span>
+      </span>
+    </label>
     </p>
     <button>Submit</button>
   </form>
